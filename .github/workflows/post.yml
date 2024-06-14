@@ -1,67 +1,74 @@
 name: Post writeups to personal site
 
 on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+    # Runs on pushes targeting the default branch
+    push:
+        branches: ["main"]
+        
+        # Allows you to run this workflow manually from the Actions tab
+        workflow_dispatch:
+            
+            # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+    contents: read
+    pages: write
+    id-token: write
+    
+    # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+    # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
-  
+    group: "pages"
+    cancel-in-progress: false
+            
 jobs:
-  push: 
-    runs-on: ubuntu-latest
-    container: pandoc/latex    # "ubuntu" is a more generic container
-                               # using "pandoc/latex" because of dependencies
-                               # used in the specific "build.sh"
-    steps:
-      - name: Push directory to another repository
-      # You may pin to the exact commit or the version.
-      # uses: cpina/github-action-push-to-another-repository@07c4d7b3def0a8ebe788a8f2c843a4e1de4f6900
-      - uses: cpina/github-action-push-to-another-repository@v1.7.2
-      - with:
-          # Directory to copy from
-          source-directory: .                 # Post everything
-          
-          # Name of the destination username/organization
-          destination-github-username: Hal0g3n
-          
-          # Destination repository
-          destination-repository-name: Hal0g3n.github.io
-          
-          # Email for the git commit
-          # user-email: [Optional], default = 
-          
-          # Github server
-          # github-server: [Optional], default = github.com
-          
-          # Name used in the git commit
-          # user-name: # [Optional], default = destination username/organization name
-          
-          # Username/organization for the destination repository
-          # destination-repository-username: # [Optional], default is 
-          
-          # Set target branch name for the destination repository
-          target-branch: main # [Optional], default = main
-          
-          # commit message for the output repository. ORIGIN_COMMIT is replaced by the URL@commit in the origin repo
-          commit-message: Updates from CTF Notes repository # [Optional], default is Update from `ORIGIN_COMMIT`
-          
-          # The directory to wipe and replace in the target repository
-          target-directory: src/pages/CTF # [Optional], default = .
-          
-          # create target branch if not exist
-          # create-target-branch-if-needed: # [Optional], default = false
-                
+    push: 
+        runs-on: ubuntu-latest
+        # using "pandoc/latex" because of dependencies
+        # used in the specific "build.sh"
+        steps:
+        
+            - name: Retrieve the current repo
+              uses: actions/checkout@main
+
+            - name: Remove workflow thingies
+              run: rm -rf ./.github
+
+            - name: Push directory to another repository
+              uses: cpina/github-action-push-to-another-repository@main
+              env:
+                    SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+              with:
+                    # Directory to copy from
+                    source-directory: . # Copy everything
+                    
+                    # Name of the destination username/organization
+                    destination-github-username: Hal0g3n
+                    
+                    # Destination repository
+                    destination-repository-name: Hal0g3n.github.io
+                    
+                    # Email for the git commit
+                    # user-email: [Optional], default = 
+                    
+                    # Github server
+                    # github-server: [Optional], default = github.com
+                    
+                    # Name used in the git commit
+                    # user-name: # [Optional], default = destination username/organization name
+                    
+                    # Username/organization for the destination repository
+                    # destination-repository-username: # [Optional], default is 
+                    
+                    # Set target branch name for the destination repository
+                    target-branch: main # [Optional], default = main
+                    
+                    # commit message for the output repository. ORIGIN_COMMIT is replaced by the URL@commit in the origin repo
+                    commit-message: Updates from CTF Notes repository # [Optional], default is Update from `ORIGIN_COMMIT`
+                    
+                    # The directory to wipe and replace in the target repository
+                    target-directory: src/pages/CTF # [Optional], default = .
+                    
+                    # create target branch if not exist
+                    # create-target-branch-if-needed: # [Optional], default = false
+                    
+                    

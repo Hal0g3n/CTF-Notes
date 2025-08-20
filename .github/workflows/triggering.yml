@@ -28,6 +28,6 @@ jobs:
           # Name, filename or ID of workflow to run
           workflow: astro.yml
           # GitHub token with repo write access, only required if the workflow is in a different repository
-          token: {{ WORKFLOW_GITHUBIO_PAT }}
+          token: ${{ secrets.WORKFLOW_GITHUBIO_PAT }}
           # Repo owner & name, slash separated, only set if invoking a workflow in a different repo
           repo: Hal0g3n/Hal0g3n.github.io

@@ -1,0 +1,33 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Trigger
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Workflow Dispatch
+        # You may pin to the exact commit or the version.
+        # uses: benc-uk/workflow-dispatch@25b02cc069be46d637e8fe2f1e8484008e9e9609
+        uses: benc-uk/workflow-dispatch@v1.2.3
+        with:
+          # Name, filename or ID of workflow to run
+          workflow: astro.yml
+          # GitHub token with repo write access, only required if the workflow is in a different repository
+          # token: # optional, default is ${{ github.token }}
+          # Repo owner & name, slash separated, only set if invoking a workflow in a different repo
+          repo: Hal0g3n/Hal0g3n.github.io
